@@ -4,20 +4,18 @@ import (
 	"github.com/gookit/slog"
 	"github.com/gookit/slog/handler"
 	"os"
-	"path/filepath"
-	"runtime"
 )
 
 func GetRunFolder() string {
-	_, filename, _, ok := runtime.Caller(0)
-	if !ok {
-		panic("No caller information")
+	filename, err := os.Getwd()
+	if err != nil {
+		panic("Cannot get running directory: " + err.Error())
 	}
-	return filepath.Dir(filename)
+	return filename
 }
 
 func GetLogsFolder() string {
-	logsFolder := RunFolder + "/" + "logs"
+	logsFolder := RunFolder + "\\" + "logs"
 	// Check for exist and create if nor exist
 	if _, err := os.Stat(logsFolder); os.IsNotExist(err) {
 		err := os.Mkdir(logsFolder, 0755) // Create the directory with permissions 0755
@@ -26,6 +24,10 @@ func GetLogsFolder() string {
 		}
 	}
 	return logsFolder
+}
+
+func GetConfigPath() string {
+	return RunFolder + "\\" + "config.json"
 }
 
 func GetLogger() *slog.Logger {

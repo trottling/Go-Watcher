@@ -8,18 +8,13 @@ import (
 
 func LoadConfig() {
 	src.Log.Info("Loading config...")
-	ValidateConfig()
-	ReadConfig()
-}
-func ValidateConfig() {
+
 	// Check for config file exist
 	_, err := os.Stat(src.ConfigPath)
 	if os.IsNotExist(err) {
 		src.Log.Panic("Config file doesn't exist: " + src.ConfigPath)
 	}
-}
 
-func ReadConfig() {
 	src.Log.Info("Config path: " + src.ConfigPath)
 	file, err := os.Open(src.ConfigPath)
 	if err != nil {

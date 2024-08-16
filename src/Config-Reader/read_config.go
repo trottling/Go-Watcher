@@ -36,7 +36,7 @@ func ReadConfig() {
 		src.Log.Panic("Cannot read config: " + err.Error())
 	}
 
-	// Unmarshal the JSON data
+	// Marshal the JSON data
 	jsonParser := json.NewDecoder(configFile)
 	err = jsonParser.Decode(&src.Config)
 	if err != nil {
@@ -44,5 +44,7 @@ func ReadConfig() {
 	}
 
 	// Print the config for debugging
-	src.Log.Info("Config:", src.Config)
+	jsonConfig, _ := json.MarshalIndent(src.Config, "", "  ")
+	src.Log.Info("Config JSON:", string(jsonConfig))
+	src.Log.Info("Config loaded successfully")
 }

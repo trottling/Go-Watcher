@@ -36,8 +36,6 @@ func GetLogger() *slog.Logger {
 	jsonFileHandler := handler.NewBuilder().
 		WithLogfile(JsonLogFilePath).
 		WithLogLevels(slog.AllLevels).
-		WithBuffSize(1024 * 8).
-		WithBuffMode(handler.BuffModeBite).
 		WithRotateTime(rotatefile.EveryHour).
 		WithUseJSON(true).
 		Build()
@@ -46,8 +44,6 @@ func GetLogger() *slog.Logger {
 	plainFileHandler := handler.NewBuilder().
 		WithLogfile(PlainLogFilePath).
 		WithLogLevels(slog.AllLevels).
-		WithBuffSize(1024 * 8).
-		WithBuffMode(handler.BuffModeBite).
 		WithRotateTime(rotatefile.EveryHour).
 		Build()
 

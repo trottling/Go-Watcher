@@ -1,7 +1,11 @@
 package main
 
-import "Go-Watcher/src/Config-Reader"
+import (
+	"Go-Watcher/src"
+	"Go-Watcher/src/Config-Reader"
+)
 
 func main() {
-	Config_Reader.ValidateConfig()
+	src.Log.Info("Starting Go-Watcher...")
+	Config_Reader.LoadConfig()
 }

@@ -2,7 +2,7 @@
   "Proxy_Server": {
     "Address": "127.0.0.1",
     "Port": 8080,
-    "Threads": 4,
+    "Threads": 1000,
     "Pre_Allocate_Memory": true,
     "Connection_Timeout": 30
   },
@@ -11,6 +11,6 @@
     "Legit_Ports_RPM": 50,
     "Legit_Ports": [80, 443],
     "Block_IPs": true,
-    "Block_IPs_time": 60
+    "Block_IPs_time": 600
   }
 }

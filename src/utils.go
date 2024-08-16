@@ -4,7 +4,9 @@ import (
 	"github.com/gookit/slog"
 	"github.com/gookit/slog/handler"
 	"github.com/gookit/slog/rotatefile"
+	"github.com/matishsiao/goInfo"
 	"os"
+	"strings"
 )
 
 func GetRunFolder() string {
@@ -63,4 +65,14 @@ func GetLogger() *slog.Logger {
 	logger.AddHandler(consoleHandler)
 
 	return logger
+}
+
+func LogMachineInfo() {
+	HostInfo, err := goInfo.GetInfo()
+	if err != nil {
+		Log.Error("Cannot get host info: " + err.Error())
+	}
+
+	Log.Info("Running on:")
+	Log.Info("\n" + strings.ReplaceAll(HostInfo.String(), ",", "\n"))
 }

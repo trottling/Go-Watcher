@@ -45,6 +45,6 @@ func ReadConfig() {
 
 	// Print the config for debugging
 	jsonConfig, _ := json.MarshalIndent(src.Config, "", "  ")
-	src.Log.Info("Config JSON:", string(jsonConfig))
+	src.Log.Info("Config JSON:", "\n", string(jsonConfig))
 	src.Log.Info("Config loaded successfully")
 }

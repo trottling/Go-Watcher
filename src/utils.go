@@ -3,6 +3,7 @@ package src
 import (
 	"github.com/gookit/slog"
 	"github.com/gookit/slog/handler"
+	"github.com/gookit/slog/rotatefile"
 	"os"
 )
 
@@ -31,17 +32,24 @@ func GetConfigPath() string {
 }
 
 func GetLogger() *slog.Logger {
+	// JSON File Handler
+	jsonFileHandler := handler.NewBuilder().
+		WithLogfile(JsonLogFilePath).
+		WithLogLevels(slog.AllLevels).
+		WithBuffSize(1024 * 8).
+		WithBuffMode(handler.BuffModeBite).
+		WithRotateTime(rotatefile.EveryHour).
+		WithUseJSON(true).
+		Build()
 
-	// File handler for JSON
-	jsonFileHandler, err := handler.JSONFileHandler(JsonLogFilePath)
-	if err != nil {
-		panic("Error creating JSON file handler: " + err.Error())
-	}
-	// File handler for Plain text
-	plainFileHandler, err := handler.NewFileHandler(PlainLogFilePath)
-	if err != nil {
-		panic("Error creating plain text file handler: " + err.Error())
-	}
+	// Plain text File Handler
+	plainFileHandler := handler.NewBuilder().
+		WithLogfile(PlainLogFilePath).
+		WithLogLevels(slog.AllLevels).
+		WithBuffSize(1024 * 8).
+		WithBuffMode(handler.BuffModeBite).
+		WithRotateTime(rotatefile.EveryHour).
+		Build()
 
 	// Console formatter
 	consoleFormatter := slog.NewTextFormatter()

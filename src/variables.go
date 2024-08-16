@@ -9,16 +9,21 @@ var (
 	// Misc
 	RunFolder = GetRunFolder()
 
-	// Config
-	ConfigPath = GetConfigPath()
-	Config     = AppConfig{}
-
 	// Logger
 	Log              = GetLogger()
 	JsonLogFilePath  = GetLogsFolder() + "\\" + time.Now().Format("2006-01-02_15-04-05") + "_log.json"
 	PlainLogFilePath = GetLogsFolder() + "\\" + time.Now().Format("2006-01-02_15-04-05") + "_log.txt"
+
+	// Config
+	ConfigPath = GetConfigPath()
+	Config     = AppConfig{}
+
+	// Database
+	//DBPath = RunFolder + "\\" + "database.db"
+	//DB     = GetDB()
 )
 
+// AppConfig App config from config.json
 type AppConfig struct {
 	ProxyServer struct {
 		Address           string `json:"Address"`
@@ -34,4 +39,13 @@ type AppConfig struct {
 		BlockIPs         bool  `json:"Block_IPs"`
 		BlockIPsTime     int   `json:"Block_IPs_time"`
 	} `json:"Activity_Handler"`
+}
+
+type Request struct {
+	IPAddress  string // IP address of client
+	Protocol   string // Client protocol
+	Port       int    // Host port
+	Path       string // Host path e.g. /index.html
+	Location   string // Host location e.g. example.com or 127.0.0.1
+	StatusCode int    // Host response status code
 }

@@ -3,7 +3,8 @@
     "Port": 8080,
     "Threads": 1000,
     "Pre_Allocate_Memory": true,
-    "Connection_Timeout": 30
+    "Connection_Timeout": 30,
+    "Show_Connections_STDOUT": true
   },
   "Activity_Handler": {
     "Non_legit_Ports_RPM": 10,

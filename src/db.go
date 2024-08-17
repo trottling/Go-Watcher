@@ -20,3 +20,14 @@ func GetDB() *sql.DB {
 	Log.Info("Database connected successfully")
 	return db
 }
+
+func InsertRequest(request Request) {
+	// Insert the request data into the 'requests' table
+	_, err := DBConn.Exec(`
+		INSERT INTO requests (ip_address, protocol, port, path, location, status_code, timestamp)
+		VALUES (?, ?, ?, ?, ?, ?, ?)
+	`, request.IPAddress, request.Protocol, request.Port, request.Path, request.Location, request.StatusCode, request.Timestamp)
+	if err != nil {
+		Log.Error("Error inserting request: ", err)
+	}
+}

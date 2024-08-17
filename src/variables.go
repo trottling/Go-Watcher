@@ -51,4 +51,5 @@ type Request struct {
 	Path       string // Host path e.g. /index.html
 	Location   string // Host location e.g. example.com or 127.0.0.1
 	StatusCode int    // Host response status code
+	Timestamp  int64  // Request timestamp
 }

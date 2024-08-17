@@ -37,7 +37,7 @@ func GetConfigPath() string {
 	return RunFolder + "\\" + "config.json"
 }
 
-func GetLogger() *slog.Logger {
+func InitLogger() {
 	// JSON File Handler
 	jsonFileHandler := handler.NewBuilder().
 		WithLogfile(JsonLogFilePath).
@@ -68,7 +68,7 @@ func GetLogger() *slog.Logger {
 	logger.AddHandler(plainFileHandler)
 	logger.AddHandler(consoleHandler)
 
-	return logger
+	Log = logger
 }
 
 func LogMachineInfo() {
@@ -81,8 +81,9 @@ func LogMachineInfo() {
 	Log.Info("\n" + strings.ReplaceAll(strings.ReplaceAll(HostInfo.String(), ",", "\n"), ":", ": "))
 }
 
-func GetConnectionsPool() *ants.MultiPoolWithFunc {
-	pool, err := ants.NewMultiPoolWithFunc(runtime.NumCPU(),
+func InitConnectionsPool() {
+	var err error
+	ConnectionPool, err = ants.NewMultiPoolWithFunc(runtime.NumCPU(),
 		Config.ProxyServer.Threads,
 		func(i interface{}) {
 			fmt.Println(i)
@@ -91,7 +92,6 @@ func GetConnectionsPool() *ants.MultiPoolWithFunc {
 		ants.WithLogger(Log),
 		ants.WithPreAlloc(Config.ProxyServer.PreAllocateMemory))
 	if err != nil {
-		Log.Panic("Cannot create connections pool for proxy-server: " + err.Error())
+		Log.Panic("Cannot create connections pool for Proxy-Server: " + err.Error())
 	}
-	return pool
 }

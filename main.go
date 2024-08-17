@@ -6,8 +6,10 @@ import (
 )
 
 func main() {
+	src.InitLogger()
 	src.Log.Info("Starting Go-Watcher...")
 	src.LogMachineInfo()
 	Config_Reader.LoadConfig()
 	src.ConnectDB()
+	src.InitConnectionsPool()
 }

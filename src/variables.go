@@ -2,6 +2,8 @@ package src
 
 import (
 	"database/sql"
+	"github.com/gookit/slog"
+	"github.com/panjf2000/ants/v2"
 	"path/filepath"
 	"time"
 )
@@ -12,7 +14,7 @@ var (
 	RunFolder = GetRunFolder()
 
 	// Logger
-	Log              = GetLogger()
+	Log              *slog.Logger
 	JsonLogFilePath  = filepath.FromSlash(GetLogsFolder() + "/" + time.Now().Format("2006-01-02_15-04-05") + "_log.json")
 	PlainLogFilePath = filepath.FromSlash(GetLogsFolder() + "/" + time.Now().Format("2006-01-02_15-04-05") + "_log.txt")
 
@@ -25,7 +27,7 @@ var (
 	DBConn *sql.DB
 
 	// Proxy server
-	ConnectionPool = GetConnectionsPool()
+	ConnectionPool *ants.MultiPoolWithFunc
 )
 
 // AppConfig App config from config.json

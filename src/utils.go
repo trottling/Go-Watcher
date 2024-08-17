@@ -78,7 +78,7 @@ func LogMachineInfo() {
 	}
 
 	Log.Info("Running on:")
-	Log.Info("\n" + strings.ReplaceAll(HostInfo.String(), ",", "\n"))
+	Log.Info("\n" + strings.ReplaceAll(strings.ReplaceAll(HostInfo.String(), ",", "\n"), ":", ": "))
 }
 
 func GetConnectionsPool() *ants.MultiPoolWithFunc {

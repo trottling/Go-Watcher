@@ -2,7 +2,7 @@ package src
 
 import (
 	"database/sql"
-	_ "modernc.org/sqlite"
+	_ "modernc.org/sqlite" // Cgo free driver
 )
 
 func ConnectDB() {
@@ -20,14 +20,23 @@ func ConnectDB() {
 		Log.Fatal("Error pinging database: " + err.Error())
 	}
 
-	// Get records count
-	var count int
-	err = DBConn.QueryRow("SELECT COUNT(*) FROM connections").Scan(&count)
+	// Get records count in 'connections' table
+	var connectionsCount int
+	err = DBConn.QueryRow("SELECT COUNT(*) FROM connections").Scan(&connectionsCount)
 	if err != nil {
 		Log.Fatal("Error getting records count: " + err.Error())
 	}
 
-	Log.Infof("Database connected successfully : %d records in 'connections' table", count)
+	// Get records count in 'connections' table
+	var blockedIpsCount int
+	err = DBConn.QueryRow("SELECT COUNT(*) FROM connections").Scan(&blockedIpsCount)
+	if err != nil {
+		Log.Fatal("Error getting records count: " + err.Error())
+	}
+
+	Log.Info("Database connected successfully")
+	Log.Infof("%d records in 'connections' table", connectionsCount)
+	Log.Infof("%d records in 'blocked_ips' table", blockedIpsCount)
 }
 
 func InsertRequest(request Request) {

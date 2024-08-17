@@ -1,6 +1,7 @@
 package src
 
 import (
+	"database/sql"
 	"path/filepath"
 	"time"
 )
@@ -21,7 +22,7 @@ var (
 
 	// Database
 	DBPath = filepath.FromSlash(RunFolder + "/" + "database.db")
-	DBConn = GetDB()
+	DBConn *sql.DB
 
 	// Proxy server
 	ConnectionPool = GetConnectionsPool()

@@ -35,10 +35,11 @@ var (
 // AppConfig App config from config.json
 type AppConfig struct {
 	ProxyServer struct {
-		Port              int  `json:"Port"`
-		Threads           int  `json:"Threads"`
-		PreAllocateMemory bool `json:"Pre_Allocate_Memory"`
-		ConnectionTimeout int  `json:"Connection_Timeout"`
+		Port                  int  `json:"Port"`
+		Threads               int  `json:"Threads"`
+		PreAllocateMemory     bool `json:"Pre_Allocate_Memory"`
+		ConnectionTimeout     int  `json:"Connection_Timeout"`
+		ShowConnectionsSTDOUT bool `json:"Show_Connections_STDOUT"`
 	} `json:"Proxy_Server"`
 	ActivityHandler struct {
 		NonLegitPortsRPM        int      `json:"Non_legit_Ports_RPM"`

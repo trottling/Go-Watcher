@@ -1,17 +1,12 @@
 package src
 
 import (
-	"fmt"
 	"github.com/gookit/slog"
 	"github.com/gookit/slog/handler"
 	"github.com/gookit/slog/rotatefile"
 	"github.com/matishsiao/goInfo"
-	"github.com/panjf2000/ants/v2"
-	"gopkg.in/elazarl/goproxy.v1"
-	"net/http"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strings"
 )
 
@@ -82,27 +77,4 @@ func InitLogger() {
 	logger.AddHandler(consoleHandler)
 
 	Log = logger
-}
-
-func InitConnectionsPool() {
-	Log.Infof("Initializing connections pool : %d CPUs : %d threads", runtime.NumCPU(), Config.ProxyServer.Threads)
-	var err error
-	ConnectionPool, err = ants.NewMultiPoolWithFunc(runtime.NumCPU(),
-		Config.ProxyServer.Threads,
-		func(i interface{}) {
-			fmt.Println(i)
-		},
-		ants.RoundRobin,
-		ants.WithLogger(Log),
-		ants.WithPreAlloc(Config.ProxyServer.PreAllocateMemory))
-	if err != nil {
-		Log.Panic("Cannot create connections pool for Proxy-Server: " + err.Error())
-	}
-}
-
-func InitProxyServer() {
-	ProxyServer = goproxy.NewProxyHttpServer()
-	ProxyServer.Verbose = true
-	ProxyServer.
-		log.Fatal(http.ListenAndServe(":8080", ProxyServer))
 }

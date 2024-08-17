@@ -11,6 +11,8 @@
     "Legit_Paths_Ignore_Regex": [".*/favicon.ico$"],
     "Legit_Ports": [80, 443],
     "Block_IPs": true,
-    "Block_IPs_time": 600
+    "Block_IPs_time": 600,
+    "Dump_Requests": true,
+    "Requests_Dump_Ignore_Regex": [".*.ico$", ".*.css$", ".*.png$", ".*.js$"]
   }
 }

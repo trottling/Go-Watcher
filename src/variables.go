@@ -54,6 +54,7 @@ type AppConfig struct {
 	} `json:"Activity_Handler"`
 }
 
+// Connection request and response summary data, will be added to database
 type Connection struct {
 	IPAddress  string // IP address of client
 	Protocol   string // Client protocol
@@ -61,9 +62,10 @@ type Connection struct {
 	Path       string // Host path e.g. /index.html
 	Location   string // Host location e.g. example.com or 127.0.0.1
 	StatusCode int    // Host response status code
-	Timestamp  int64  // Connection timestamp
+	Timestamp  int64  // Connection timestamp in unix format
 }
 
+// ConnectionData Used in ProxyServer handling
 type ConnectionData struct {
 	Request  *http.Request  // Will be process if Type == "req"
 	Response *http.Response // Will be process if Type == "res"

@@ -1,11 +1,14 @@
 package src
 
 import (
+	"fmt"
 	"github.com/gookit/slog"
 	"github.com/gookit/slog/handler"
 	"github.com/gookit/slog/rotatefile"
 	"github.com/matishsiao/goInfo"
+	"github.com/panjf2000/ants/v2"
 	"os"
+	"runtime"
 	"strings"
 )
 
@@ -75,4 +78,19 @@ func LogMachineInfo() {
 
 	Log.Info("Running on:")
 	Log.Info("\n" + strings.ReplaceAll(HostInfo.String(), ",", "\n"))
+}
+
+func GetConnectionsPool() *ants.MultiPoolWithFunc {
+	pool, err := ants.NewMultiPoolWithFunc(runtime.NumCPU(),
+		Config.ProxyServer.Threads,
+		func(i interface{}) {
+			fmt.Println(i)
+		},
+		ants.RoundRobin,
+		ants.WithLogger(Log),
+		ants.WithPreAlloc(Config.ProxyServer.PreAllocateMemory))
+	if err != nil {
+		Log.Panic("Cannot create connections pool for proxy-server: " + err.Error())
+	}
+	return pool
 }

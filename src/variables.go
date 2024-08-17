@@ -21,6 +21,9 @@ var (
 	// Database
 	DBPath = RunFolder + "\\" + "database.db"
 	DBConn = GetDB()
+
+	// Proxy server
+	ConnectionPool = GetConnectionsPool()
 )
 
 // AppConfig App config from config.json

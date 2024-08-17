@@ -1,6 +1,9 @@
 package src
 
-import "Go-Watcher/src/Config-Reader"
+import (
+	"Go-Watcher/src/Config-Reader"
+	"Go-Watcher/src/Proxy-Server"
+)
 
 func Run() {
 	InitLogger()
@@ -8,5 +11,6 @@ func Run() {
 	LogMachineInfo()
 	Config_Reader.LoadConfig()
 	ConnectDB()
-	InitConnectionsPool()
+	Proxy_Server.InitConnectionsPool()
+	Proxy_Server.RunProxyServer()
 }

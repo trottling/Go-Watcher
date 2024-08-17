@@ -19,7 +19,15 @@ func ConnectDB() {
 	if err != nil {
 		Log.Fatal("Error pinging database: " + err.Error())
 	}
-	Log.Info("Database connected successfully")
+
+	// Get records count
+	var count int
+	err = DBConn.QueryRow("SELECT COUNT(*) FROM connections").Scan(&count)
+	if err != nil {
+		Log.Fatal("Error getting records count: " + err.Error())
+	}
+
+	Log.Infof("Database connected successfully : %d records in 'connections' table", count)
 }
 
 func InsertRequest(request Request) {

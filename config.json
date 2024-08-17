@@ -1,6 +1,5 @@
 {
   "Proxy_Server": {
-    "Address": "127.0.0.1",
     "Port": 8080,
     "Threads": 1000,
     "Pre_Allocate_Memory": true,
@@ -9,6 +8,7 @@
   "Activity_Handler": {
     "Non_legit_Ports_RPM": 10,
     "Legit_Ports_RPM": 50,
+    "Legit_Paths_Ignore_Regex": [".*/favicon.ico$"],
     "Legit_Ports": [80, 443],
     "Block_IPs": true,
     "Block_IPs_time": 600

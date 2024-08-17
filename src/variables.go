@@ -35,18 +35,18 @@ var (
 // AppConfig App config from config.json
 type AppConfig struct {
 	ProxyServer struct {
-		Address           string `json:"Address"`
-		Port              int    `json:"Port"`
-		Threads           int    `json:"Threads"`
-		PreAllocateMemory bool   `json:"Pre_Allocate_Memory"`
-		ConnectionTimeout int    `json:"Connection_Timeout"`
+		Port              int  `json:"Port"`
+		Threads           int  `json:"Threads"`
+		PreAllocateMemory bool `json:"Pre_Allocate_Memory"`
+		ConnectionTimeout int  `json:"Connection_Timeout"`
 	} `json:"Proxy_Server"`
 	ActivityHandler struct {
-		NonLegitPortsRPM int   `json:"Non_legit_Ports_RPM"`
-		LegitPortsRPM    int   `json:"Legit_Ports_RPM"`
-		LegitPorts       []int `json:"Legit_Ports"`
-		BlockIPs         bool  `json:"Block_IPs"`
-		BlockIPsTime     int   `json:"Block_IPs_time"`
+		NonLegitPortsRPM      int      `json:"Non_legit_Ports_RPM"`
+		LegitPortsRPM         int      `json:"Legit_Ports_RPM"`
+		LegitPathsIgnoreRegex []string `json:"Legit_Paths_Ignore_Regex"`
+		LegitPorts            []int    `json:"Legit_Ports"`
+		BlockIPs              bool     `json:"Block_IPs"`
+		BlockIPsTime          int      `json:"Block_IPs_time"`
 	} `json:"Activity_Handler"`
 }
 

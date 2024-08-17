@@ -7,11 +7,24 @@ import (
 	"github.com/gookit/slog/rotatefile"
 	"github.com/matishsiao/goInfo"
 	"github.com/panjf2000/ants/v2"
+	"gopkg.in/elazarl/goproxy.v1"
+	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
 )
+
+func LogMachineInfo() {
+	HostInfo, err := goInfo.GetInfo()
+	if err != nil {
+		Log.Error("Cannot get host info: " + err.Error())
+	}
+
+	Log.Info("Running on:")
+	Log.Info("\n" + strings.ReplaceAll(strings.ReplaceAll(HostInfo.String(), ",", "\n"), ":", ": "))
+}
 
 func GetRunFolder() string {
 	filename, err := os.Getwd()
@@ -34,7 +47,7 @@ func GetLogsFolder() string {
 }
 
 func GetConfigPath() string {
-	return RunFolder + "\\" + "config.json"
+	return filepath.FromSlash(RunFolder + "\\" + "config.json")
 }
 
 func InitLogger() {
@@ -71,17 +84,8 @@ func InitLogger() {
 	Log = logger
 }
 
-func LogMachineInfo() {
-	HostInfo, err := goInfo.GetInfo()
-	if err != nil {
-		Log.Error("Cannot get host info: " + err.Error())
-	}
-
-	Log.Info("Running on:")
-	Log.Info("\n" + strings.ReplaceAll(strings.ReplaceAll(HostInfo.String(), ",", "\n"), ":", ": "))
-}
-
 func InitConnectionsPool() {
+	Log.Infof("Initializing connections pool : %d CPUs : %d threads", runtime.NumCPU(), Config.ProxyServer.Threads)
 	var err error
 	ConnectionPool, err = ants.NewMultiPoolWithFunc(runtime.NumCPU(),
 		Config.ProxyServer.Threads,
@@ -94,4 +98,11 @@ func InitConnectionsPool() {
 	if err != nil {
 		Log.Panic("Cannot create connections pool for Proxy-Server: " + err.Error())
 	}
+}
+
+func InitProxyServer() {
+	ProxyServer = goproxy.NewProxyHttpServer()
+	ProxyServer.Verbose = true
+
+	log.Fatal(http.ListenAndServe(":8080", ProxyServer))
 }

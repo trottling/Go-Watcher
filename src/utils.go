@@ -64,6 +64,7 @@ func InitLogger() {
 		WithLogfile(PlainLogFilePath).
 		WithLogLevels(slog.AllLevels).
 		WithRotateTime(rotatefile.EveryHour).
+		WithUseJSON(false).
 		Build()
 
 	// Console formatter

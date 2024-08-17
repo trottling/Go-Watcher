@@ -8,7 +8,6 @@ import (
 	"github.com/matishsiao/goInfo"
 	"github.com/panjf2000/ants/v2"
 	"gopkg.in/elazarl/goproxy.v1"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -35,7 +34,7 @@ func GetRunFolder() string {
 }
 
 func GetLogsFolder() string {
-	logsFolder := filepath.FromSlash(RunFolder + "/" + "logs")
+	logsFolder := filepath.FromSlash(RunFolder + "/" + "work_logs")
 	// Check for exist and create if nor exist
 	if _, err := os.Stat(logsFolder); os.IsNotExist(err) {
 		err := os.Mkdir(logsFolder, 0755) // Create the directory with permissions 0755
@@ -104,6 +103,6 @@ func InitConnectionsPool() {
 func InitProxyServer() {
 	ProxyServer = goproxy.NewProxyHttpServer()
 	ProxyServer.Verbose = true
-
-	log.Fatal(http.ListenAndServe(":8080", ProxyServer))
+	ProxyServer.
+		log.Fatal(http.ListenAndServe(":8080", ProxyServer))
 }

@@ -16,20 +16,15 @@ func LoadConfig() {
 	}
 
 	src.Log.Info("Config path: " + src.ConfigPath)
-	file, err := os.Open(src.ConfigPath)
-	if err != nil {
-		src.Log.Fatal("Cannot create config: " + err.Error())
-	}
-	defer func() {
-		if err = file.Close(); err != nil {
-			src.Log.Fatal("Cannot create config: " + err.Error())
-		}
-	}()
-
 	configFile, err := os.Open(src.ConfigPath)
 	if err != nil {
 		src.Log.Panic("Cannot read config: " + err.Error())
 	}
+	defer func() {
+		if err = configFile.Close(); err != nil {
+			src.Log.Panic("Cannot read config: " + err.Error())
+		}
+	}()
 
 	// Marshal the JSON data
 	jsonParser := json.NewDecoder(configFile)

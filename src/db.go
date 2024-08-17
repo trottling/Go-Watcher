@@ -42,9 +42,9 @@ func ConnectDB() {
 func InsertRequest(request Connection) {
 	// Insert the request data into the 'requests' table
 	_, err := DBConn.Exec(`
-		INSERT INTO requests (ip_address, protocol, port, path, location, status_code, timestamp)
-		VALUES (?, ?, ?, ?, ?, ?, ?)
-	`, request.IPAddress, request.Protocol, request.Port, request.Path, request.Location, request.StatusCode, request.Timestamp)
+		INSERT INTO requests (ip_address, port, path, location, status_code, timestamp)
+		VALUES (?, ?, ?, ?, ?, ?)
+	`, request.IPAddress, request.Port, request.Path, request.Location, request.StatusCode, request.Timestamp)
 	if err != nil {
 		Log.Error("Error inserting request: ", err)
 	}

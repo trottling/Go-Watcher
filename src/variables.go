@@ -57,7 +57,6 @@ type AppConfig struct {
 // Connection request and response summary data, will be added to database
 type Connection struct {
 	IPAddress  string // IP address of client
-	Protocol   string // Client protocol
 	Port       int    // Host port
 	Path       string // Host path e.g. /index.html
 	Location   string // Host location e.g. example.com or 127.0.0.1

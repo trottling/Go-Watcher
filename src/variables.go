@@ -1,6 +1,7 @@
 package src
 
 import (
+	"path/filepath"
 	"time"
 )
 
@@ -11,15 +12,15 @@ var (
 
 	// Logger
 	Log              = GetLogger()
-	JsonLogFilePath  = GetLogsFolder() + "\\" + time.Now().Format("2006-01-02_15-04-05") + "_log.json"
-	PlainLogFilePath = GetLogsFolder() + "\\" + time.Now().Format("2006-01-02_15-04-05") + "_log.txt"
+	JsonLogFilePath  = filepath.FromSlash(GetLogsFolder() + "/" + time.Now().Format("2006-01-02_15-04-05") + "_log.json")
+	PlainLogFilePath = filepath.FromSlash(GetLogsFolder() + "/" + time.Now().Format("2006-01-02_15-04-05") + "_log.txt")
 
 	// Config
 	ConfigPath = GetConfigPath()
 	Config     = AppConfig{}
 
 	// Database
-	DBPath = RunFolder + "\\" + "database.db"
+	DBPath = filepath.FromSlash(RunFolder + "/" + "database.db")
 	DBConn = GetDB()
 
 	// Proxy server

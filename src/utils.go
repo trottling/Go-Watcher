@@ -8,6 +8,7 @@ import (
 	"github.com/matishsiao/goInfo"
 	"github.com/panjf2000/ants/v2"
 	"os"
+	"path/filepath"
 	"runtime"
 	"strings"
 )
@@ -21,7 +22,7 @@ func GetRunFolder() string {
 }
 
 func GetLogsFolder() string {
-	logsFolder := RunFolder + "\\" + "logs"
+	logsFolder := filepath.FromSlash(RunFolder + "/" + "logs")
 	// Check for exist and create if nor exist
 	if _, err := os.Stat(logsFolder); os.IsNotExist(err) {
 		err := os.Mkdir(logsFolder, 0755) // Create the directory with permissions 0755

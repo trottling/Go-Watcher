@@ -39,7 +39,7 @@ func ConnectDB() {
 	Log.Infof("%d records in 'blocked_ips' table", blockedIpsCount)
 }
 
-func InsertRequest(request Request) {
+func InsertRequest(request Connection) {
 	// Insert the request data into the 'requests' table
 	_, err := DBConn.Exec(`
 		INSERT INTO requests (ip_address, protocol, port, path, location, status_code, timestamp)

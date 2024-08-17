@@ -32,7 +32,7 @@ func RunProxyServer() {
 		err := src.ConnectionPool.Invoke(connectionData)
 
 		if err != nil {
-			src.Log.Error("Request Handling Error: " + err.Error())
+			src.Log.Error("Connection Handling Error: " + err.Error())
 			return nil, nil
 		}
 

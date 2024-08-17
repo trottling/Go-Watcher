@@ -62,6 +62,7 @@ type Connection struct {
 	Location   string // Host location e.g. example.com or 127.0.0.1
 	StatusCode int    // Host response status code
 	Timestamp  int64  // Connection timestamp in unix format
+	Allowed    bool   // Is connection allowed
 }
 
 // ConnectionData Used in ProxyServer handling

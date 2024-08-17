@@ -19,8 +19,8 @@ var (
 	Config     = AppConfig{}
 
 	// Database
-	//DBPath = RunFolder + "\\" + "database.db"
-	//DB     = GetDB()
+	DBPath = RunFolder + "\\" + "database.db"
+	DBConn = GetDB()
 )
 
 // AppConfig App config from config.json

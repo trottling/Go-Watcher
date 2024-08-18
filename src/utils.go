@@ -5,6 +5,8 @@ import (
 	"github.com/gookit/slog/handler"
 	"github.com/gookit/slog/rotatefile"
 	"github.com/matishsiao/goInfo"
+	"io"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
@@ -77,4 +79,22 @@ func InitLogger() {
 	logger.AddHandler(consoleHandler)
 
 	Log = logger
+}
+
+func GetReqBody(r *http.Request) string {
+	var reqBody string
+	if r.Body != nil {
+		// Read body to string
+		bodyBytes, err := io.ReadAll(r.Body)
+		if err != nil {
+			Log.Errorf("Error reading request body: %s", err)
+			reqBody = "Error reading request body"
+		} else {
+			reqBody = string(bodyBytes)
+		}
+	} else {
+		// Set body to "No request body" if it's empty
+		reqBody = "No request body"
+	}
+	return reqBody
 }

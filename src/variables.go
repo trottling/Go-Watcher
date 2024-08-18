@@ -5,6 +5,7 @@ import (
 	"github.com/gookit/slog"
 	"gopkg.in/elazarl/goproxy.v1"
 	"path/filepath"
+	"regexp"
 	"time"
 )
 
@@ -29,15 +30,16 @@ var (
 	// Proxy server
 	ProxyServer  *goproxy.ProxyHttpServer
 	NetDumpsPath = GetNetDumpsPath()
+
+	// Activity handler
+	LegitPathsIgnoreRegexList   []*regexp.Regexp
+	RequestsDumpIgnoreRegexList []*regexp.Regexp
 )
 
 // AppConfig App config from config.json
 type AppConfig struct {
 	ProxyServer struct {
 		Port                  int  `json:"Port"`
-		Threads               int  `json:"Threads"`
-		PreAllocateMemory     bool `json:"Pre_Allocate_Memory"`
-		ConnectionTimeout     int  `json:"Connection_Timeout"`
 		ShowConnectionsSTDOUT bool `json:"Show_Connections_STDOUT"`
 	} `json:"Proxy_Server"`
 	ActivityHandler struct {

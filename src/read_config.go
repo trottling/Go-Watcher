@@ -3,6 +3,7 @@ package src
 import (
 	"encoding/json"
 	"os"
+	"regexp"
 )
 
 func LoadConfig() {
@@ -36,4 +37,30 @@ func LoadConfig() {
 	jsonConfig, _ := json.MarshalIndent(Config, "", "  ")
 	Log.Info("Config JSON:", "\n", string(jsonConfig))
 	Log.Info("Config loaded successfully")
+
+	// Compile all regex from config
+	CompileLegitPathsIgnoreRegex()
+	CompileRequestsDumpIgnoreRegex()
+}
+
+func CompileLegitPathsIgnoreRegex() (LegitPathsIgnoreRegexList []*regexp.Regexp) {
+	for _, path := range Config.ActivityHandler.LegitPathsIgnoreRegex {
+		reg, err := regexp.Compile(path)
+		if err != nil {
+			Log.Error("Cannot compile regex: " + err.Error())
+		}
+		LegitPathsIgnoreRegexList = append(LegitPathsIgnoreRegexList, reg)
+	}
+	return LegitPathsIgnoreRegexList
+}
+
+func CompileRequestsDumpIgnoreRegex() (RequestsDumpIgnoreRegexList []*regexp.Regexp) {
+	for _, path := range Config.ActivityHandler.RequestsDumpIgnoreRegex {
+		reg, err := regexp.Compile(path)
+		if err != nil {
+			Log.Error("Cannot compile regex: " + err.Error())
+		}
+		RequestsDumpIgnoreRegexList = append(RequestsDumpIgnoreRegexList, reg)
+	}
+	return LegitPathsIgnoreRegexList
 }

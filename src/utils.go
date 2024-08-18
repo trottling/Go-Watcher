@@ -22,6 +22,10 @@ func LogMachineInfo() {
 	Log.Info("\n" + strings.ReplaceAll(strings.ReplaceAll(HostInfo.String(), ",", "\n"), ":", ": "))
 }
 
+func GetConfigPath() string {
+	return filepath.FromSlash(RunFolder + "\\" + "config.json")
+}
+
 func GetRunFolder() string {
 	filename, err := os.Getwd()
 	if err != nil {
@@ -52,10 +56,6 @@ func GetNetDumpsPath() (path string) {
 		}
 	}
 	return path
-}
-
-func GetConfigPath() string {
-	return filepath.FromSlash(RunFolder + "\\" + "config.json")
 }
 
 func InitLogger() {

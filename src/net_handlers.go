@@ -95,6 +95,17 @@ func OnResponseHandler(r *http.Response) {
 }
 
 func DumpConnection(conn Connection) (filePath string) {
+	if !Config.ActivityHandler.DumpRequests {
+		return "* Connection dumping disabled *"
+	}
+
+	// Check for Requests_Dump_Ignore_Regex config rule match
+	for _, ignoreRegex := range RequestsDumpIgnoreRegexList {
+		if ignoreRegex.MatchString(conn.Path) {
+			return "* Connection dumping disabled by config rule match*"
+		}
+	}
+
 	// Write connection dump to file and return dump file path
 	filePath = filepath.FromSlash(NetDumpsPath + "/" + "connection_" + conn.IPAddress + "_" + conn.Type + "_" + strconv.FormatInt(time.Now().Unix(), 10) + ".txt")
 

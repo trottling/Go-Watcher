@@ -20,7 +20,15 @@ func RunProxyServer() {
 
 	// Connect request handler
 	ProxyServer.OnRequest().DoFunc(func(r *http.Request, ctx *goproxy.ProxyCtx) (*http.Request, *http.Response) {
+		// OnRequestHandler will block or allow request
 		return OnRequestHandler(r)
+	})
+
+	// Connect response handler
+	ProxyServer.OnResponse().DoFunc(func(r *http.Response, ctx *goproxy.ProxyCtx) *http.Response {
+		// OnResponseHandler will not change response
+		OnResponseHandler(r)
+		return r
 	})
 
 	// Run proxy server

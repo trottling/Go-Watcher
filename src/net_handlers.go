@@ -36,15 +36,17 @@ func OnRequestHandler(r *http.Request) (*http.Request, *http.Response) {
 		InsertRequest(connection)
 
 		// Return forbidden response
-		return r, goproxy.NewResponse(r,
-			goproxy.ContentTypeText, http.StatusForbidden,
+		return r, goproxy.NewResponse(
+			r,
+			goproxy.ContentTypeText,
+			http.StatusForbidden,
 			"Forbidden, bitch")
 	}
 }
 
-func OnResponseHandler(r *http.Response) (*http.Request, *http.Response) {
+func OnResponseHandler(r *http.Response) {
 	// dd
-	return nil, nil
+
 }
 
 func DumpConnection() {

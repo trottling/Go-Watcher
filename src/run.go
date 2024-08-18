@@ -6,6 +6,5 @@ func Run() {
 	LogMachineInfo()
 	LoadConfig()
 	ConnectDB()
-	//InitConnectionsPool()
 	RunProxyServer()
 }

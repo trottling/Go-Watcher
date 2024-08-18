@@ -3,6 +3,7 @@ package src
 import (
 	"database/sql"
 	_ "modernc.org/sqlite" // Cgo free driver
+	"time"
 )
 
 func ConnectDB() {
@@ -37,6 +38,18 @@ func ConnectDB() {
 	Log.Info("Database connected successfully")
 	Log.Infof("%d records in 'connections' table", connectionsCount)
 	Log.Infof("%d records in 'blocked_ips' table", blockedIpsCount)
+}
+
+func CheckIpBlock(ip string) bool {
+	// Check if the IP is blocked
+	// If TIMESTAMP_TO > Current timestamp IP is blocked
+	var blockedIpsCount int
+	err := DBConn.QueryRow("SELECT COUNT(*) FROM blocked_ips WHERE TIMESTAMP_TO > ?", time.Now().Unix()).Scan(&blockedIpsCount)
+	if err != nil {
+		Log.Errorf("Error checking IP block (%s): %s", ip, err)
+		return false
+	}
+	return blockedIpsCount != 0
 }
 
 func InsertRequest(request Connection) {

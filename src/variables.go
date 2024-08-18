@@ -28,7 +28,7 @@ var (
 
 	// Proxy server
 	ProxyServer  *goproxy.ProxyHttpServer
-	NetDumpsPath = filepath.FromSlash(RunFolder + "/" + "network_dumps")
+	NetDumpsPath = GetNetDumpsPath()
 )
 
 // AppConfig App config from config.json

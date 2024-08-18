@@ -20,15 +20,20 @@ func OnRequestHandler(r *http.Request) (*http.Request, *http.Response) {
 	} else {
 
 		// Add request to database as blocked
-		InsertRequest(Connection{
+		connection := Connection{
 			IPAddress:  IPAddress,
+			Type:       r.Method,
 			Port:       PortStr,
 			Path:       r.URL.Path,
 			Location:   r.Host,
 			StatusCode: http.StatusForbidden,
 			Timestamp:  time.Now().Unix(),
+			Headers:    GetReqHeaders(r),
+			Body:       GetReqBody(r),
 			Allowed:    false,
-		})
+		}
+
+		InsertRequest(connection)
 
 		// Return forbidden response
 		return r, goproxy.NewResponse(r,

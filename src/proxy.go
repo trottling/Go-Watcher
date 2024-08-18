@@ -5,6 +5,7 @@ import (
 	"gopkg.in/elazarl/goproxy.v1"
 	"net/http"
 	"runtime"
+	"strconv"
 )
 
 func RunProxyServer() {
@@ -38,7 +39,7 @@ func RunProxyServer() {
 	})
 
 	// Run proxy server
-	Log.Fatal(http.ListenAndServe(":"+string(rune(Config.ProxyServer.Port)), ProxyServer))
+	Log.Fatal(http.ListenAndServe(":"+strconv.Itoa(Config.ProxyServer.Port), ProxyServer))
 }
 
 func InitConnectionsPool() {

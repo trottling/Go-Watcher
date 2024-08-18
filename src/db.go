@@ -30,7 +30,7 @@ func ConnectDB() {
 
 	// Get records count in 'connections' table
 	var blockedIpsCount int
-	err = DBConn.QueryRow("SELECT COUNT(*) FROM connections").Scan(&blockedIpsCount)
+	err = DBConn.QueryRow("SELECT COUNT(*) FROM blocked_ips").Scan(&blockedIpsCount)
 	if err != nil {
 		Log.Fatal("Error getting records count: " + err.Error())
 	}

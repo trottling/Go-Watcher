@@ -9,10 +9,7 @@ import (
 
 func OnRequestHandler(r *http.Request) (*http.Request, *http.Response) {
 	IPAddress := r.RemoteAddr
-	Port := r.URL.Port()
-	PortStr, _ := strconv.Atoi(Port)
-	Path := r.URL.Path
-	Location := r.Host
+	PortStr, _ := strconv.Atoi(r.URL.Port())
 
 	// <-- Request check logic with bool result -->
 	isReqLegit := CheckIpBlock(IPAddress)
@@ -26,8 +23,8 @@ func OnRequestHandler(r *http.Request) (*http.Request, *http.Response) {
 		InsertRequest(Connection{
 			IPAddress:  IPAddress,
 			Port:       PortStr,
-			Path:       Path,
-			Location:   Location,
+			Path:       r.URL.Path,
+			Location:   r.Host,
 			StatusCode: http.StatusForbidden,
 			Timestamp:  time.Now().Unix(),
 			Allowed:    false,

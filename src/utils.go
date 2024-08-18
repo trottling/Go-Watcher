@@ -44,6 +44,7 @@ func GetLogsFolder() (path string) {
 
 func GetNetDumpsPath() (path string) {
 	path = filepath.FromSlash(RunFolder + "/" + "network_dumps")
+	// Check for exist and create if nor exist
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		err := os.Mkdir(path, 0755) // Create the directory with permissions 0755
 		if err != nil {

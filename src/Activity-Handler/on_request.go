@@ -10,7 +10,6 @@ import (
 )
 
 func OnRequest(data src.ConnectionData) (*http.Request, *http.Response) {
-	isReqLegit := true
 	IPAddress := data.Request.RemoteAddr
 	Port := data.Request.URL.Port()
 	PortStr, _ := strconv.Atoi(Port)
@@ -18,7 +17,7 @@ func OnRequest(data src.ConnectionData) (*http.Request, *http.Response) {
 	Location := data.Request.Host
 
 	// <-- Request check logic with bool result -->
-	isReqLegit = Database.CheckIpBlock(IPAddress)
+	isReqLegit := Database.CheckIpBlock(IPAddress)
 
 	// Send request back
 	if isReqLegit {

@@ -81,8 +81,7 @@ func InitLogger() {
 	Log = logger
 }
 
-func GetReqBody(r *http.Request) string {
-	var reqBody string
+func GetReqBody(r *http.Request) (reqBody string) {
 	if r.Body != nil {
 		// Read body to string
 		bodyBytes, err := io.ReadAll(r.Body)
@@ -97,4 +96,11 @@ func GetReqBody(r *http.Request) string {
 		reqBody = "No request body"
 	}
 	return reqBody
+}
+
+func GetReqHeaders(r *http.Request) (headersMap map[string]string) {
+	for key, values := range r.Header {
+		headersMap[key] = strings.Join(values, ", ")
+	}
+	return headersMap
 }

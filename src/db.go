@@ -62,9 +62,9 @@ func InsertRequest(request Connection) {
 	// Insert the request data into the 'requests' table
 	Log.Infof("Inserting request: %+v", request)
 	_, err := DBConn.Exec(`
-		INSERT INTO connections (ip_address, port, path, location, status_code, timestamp, allowed, type)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-	`, request.IPAddress, request.Port, request.Path, request.Location, request.StatusCode, request.Timestamp, request.Allowed, request.Type)
+		INSERT INTO connections (ip_address, port, path, location, status_code, timestamp, allowed, type, dump_path)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+	`, request.IPAddress, request.Port, request.Path, request.Location, request.StatusCode, request.Timestamp, request.Allowed, request.Type, request.DumpPath)
 	if err != nil {
 		Log.Error("Error inserting request: ", err)
 	}

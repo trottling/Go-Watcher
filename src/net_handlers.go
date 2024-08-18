@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -102,18 +103,20 @@ func OnResponseHandler(r *http.Response) {
 
 func DumpConnection(conn Connection) (filePath string) {
 	if !Config.ActivityHandler.DumpRequests {
+		Log.Infof("%s : Connection dumping disabled by config rule match", conn.IPAddress)
 		return "* Connection dumping disabled *"
 	}
 
 	// Check for Requests_Dump_Ignore_Regex config rule match
 	for _, ignoreRegex := range RequestsDumpIgnoreRegexList {
 		if ignoreRegex.MatchString(conn.Path) {
+			Log.Infof("%s : Connection dumping disabled by config rule match", conn.IPAddress)
 			return "* Connection dumping disabled by config rule match*"
 		}
 	}
 
 	// Write connection dump to file and return dump file path
-	filePath = filepath.FromSlash(NetDumpsPath + "/" + "connection_" + conn.IPAddress + "_" + conn.Type + "_" + strconv.FormatInt(time.Now().Unix(), 10) + ".txt")
+	filePath = filepath.FromSlash(NetDumpsPath + "/" + "connection_" + strings.ReplaceAll(conn.IPAddress, ":", "_") + "_" + conn.Type + "_" + strconv.FormatInt(time.Now().Unix(), 10) + ".txt")
 
 	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_RDWR, 0755)
 

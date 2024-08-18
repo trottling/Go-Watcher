@@ -53,14 +53,14 @@ type AppConfig struct {
 
 // Connection request and response summary data, will be added to database
 type Connection struct {
-	IPAddress  string // IP address of client
-	Type       string // Get, Post, etc.
-	Port       int    // Host port
-	Path       string // Host path e.g. /index.html
-	Location   string // Host location e.g. example.com or 127.0.0.1
-	StatusCode int    // Host response status code
-	Timestamp  int64  // Connection timestamp in unix format
-	Headers    string // Connection headers
-	Body       string // Connection body
-	Allowed    bool   // Is connection allowed
+	IPAddress  string            // IP address of client
+	Type       string            // Get, Post, etc.
+	Port       int               // Host port
+	Path       string            // Host path e.g. /index.html
+	Location   string            // Host location e.g. example.com or 127.0.0.1
+	StatusCode int               // Host response status code
+	Timestamp  int64             // Connection timestamp in unix format
+	Headers    map[string]string // Connection headers
+	Body       string            // Connection body
+	Allowed    bool              // Is connection allowed
 }

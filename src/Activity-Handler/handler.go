@@ -4,13 +4,13 @@ import (
 	"Go-Watcher/src"
 )
 
-func HandleConnection(data interface{}) {
+func HandleConnection(data interface{}) src.ConnectionData {
 	connectionData := data.(src.ConnectionData)
 
 	switch connectionData.Type {
 	case "req":
 		// Handle request
-		request, response := OnRequest(connectionData.Request)
+		request, response := OnRequest(connectionData)
 		if response != nil {
 			connectionData.Response = response
 		} else {
@@ -19,7 +19,7 @@ func HandleConnection(data interface{}) {
 		connectionData.Request = request
 	case "res":
 		// Handle response
-		request, response := OnResponse(connectionData.Response)
+		request, response := OnResponse(connectionData)
 		if request != nil {
 			connectionData.Request = request
 		} else {
@@ -29,4 +29,5 @@ func HandleConnection(data interface{}) {
 	default:
 		src.Log.Errorf("Unknown connection type: %s", connectionData.Type)
 	}
+	return connectionData
 }

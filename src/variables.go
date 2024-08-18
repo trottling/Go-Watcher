@@ -3,9 +3,7 @@ package src
 import (
 	"database/sql"
 	"github.com/gookit/slog"
-	"github.com/panjf2000/ants/v2"
 	"gopkg.in/elazarl/goproxy.v1"
-	"net/http"
 	"path/filepath"
 	"time"
 )
@@ -29,8 +27,7 @@ var (
 	DBConn *sql.DB
 
 	// Proxy server
-	ProxyServer    *goproxy.ProxyHttpServer
-	ConnectionPool *ants.MultiPoolWithFunc
+	ProxyServer *goproxy.ProxyHttpServer
 )
 
 // AppConfig App config from config.json
@@ -63,11 +60,4 @@ type Connection struct {
 	StatusCode int    // Host response status code
 	Timestamp  int64  // Connection timestamp in unix format
 	Allowed    bool   // Is connection allowed
-}
-
-// ConnectionData Used in ProxyServer handling
-type ConnectionData struct {
-	Request  *http.Request  // Will be process if Type == "req"
-	Response *http.Response // Will be process if Type == "res"
-	Type     string         // req or res
 }

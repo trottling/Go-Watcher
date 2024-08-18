@@ -42,22 +42,29 @@ func ConnectDB() {
 
 func CheckIpBlock(ip string) bool {
 	// Check if the IP is blocked
-	// If TIMESTAMP_TO > Current timestamp - IP is blocked
+	// If TIMESTAMP_TO > Current timestamp - IP is blocked (will return true)
 	var blockedIpsCount int
 	err := DBConn.QueryRow("SELECT COUNT(*) FROM blocked_ips WHERE TIMESTAMP_TO > ?", time.Now().Unix()).Scan(&blockedIpsCount)
 	if err != nil {
 		Log.Errorf("Error checking IP block (%s): %s", ip, err)
 		return false
 	}
-	return blockedIpsCount != 0
+	if blockedIpsCount > 0 {
+		Log.Warnf("IP %s is blocked", ip)
+		return true
+	} else {
+		Log.Infof("IP %s is not blocked", ip)
+		return false
+	}
 }
 
 func InsertRequest(request Connection) {
 	// Insert the request data into the 'requests' table
+	Log.Infof("Inserting request: %+v", request)
 	_, err := DBConn.Exec(`
-		INSERT INTO requests (ip_address, port, path, location, status_code, timestamp, allowed)
-		VALUES (?, ?, ?, ?, ?, ?)
-	`, request.IPAddress, request.Port, request.Path, request.Location, request.StatusCode, request.Timestamp)
+		INSERT INTO connections (ip_address, port, path, location, status_code, timestamp, allowed)
+		VALUES (?, ?, ?, ?, ?, ?, ?)
+	`, request.IPAddress, request.Port, request.Path, request.Location, request.StatusCode, request.Timestamp, request.Allowed)
 	if err != nil {
 		Log.Error("Error inserting request: ", err)
 	}

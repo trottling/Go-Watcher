@@ -110,7 +110,15 @@ func GetReqBody(r *http.Request) (reqBody string) {
 	return reqBody
 }
 
-func GetReqHeaders(r *http.Request) (headersMap map[string]string) {
+func GetReqHeaders(r *http.Request) map[string]string {
+	headers := r.Header
+
+	if headers == nil {
+		Log.Warn("No request headers")
+		return map[string]string{}
+	}
+
+	headersMap := make(map[string]string)
 	for key, values := range r.Header {
 		headersMap[key] = strings.Join(values, ", ")
 	}
@@ -134,7 +142,15 @@ func GetRespBody(r *http.Response) (respBody string) {
 	return respBody
 }
 
-func GetRespHeaders(r *http.Response) (headersMap map[string]string) {
+func GetRespHeaders(r *http.Response) map[string]string {
+	headers := r.Header
+
+	if headers == nil {
+		Log.Warn("No request headers")
+		return map[string]string{}
+	}
+
+	headersMap := make(map[string]string)
 	for key, values := range r.Header {
 		headersMap[key] = strings.Join(values, ", ")
 	}

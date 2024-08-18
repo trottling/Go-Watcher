@@ -2,6 +2,7 @@ package Activity_Handler
 
 import (
 	"Go-Watcher/src"
+	"Go-Watcher/src/Database"
 	"gopkg.in/elazarl/goproxy.v1"
 	"net/http"
 	"strconv"
@@ -17,7 +18,7 @@ func OnRequest(data src.ConnectionData) (*http.Request, *http.Response) {
 	Location := data.Request.Host
 
 	// <-- Request check logic with bool result -->
-	isReqLegit = src.CheckIpBlock(IPAddress)
+	isReqLegit = Database.CheckIpBlock(IPAddress)
 
 	// Send request back
 	if isReqLegit {
@@ -25,7 +26,7 @@ func OnRequest(data src.ConnectionData) (*http.Request, *http.Response) {
 	} else {
 
 		// Add request to database as blocked
-		src.InsertRequest(src.Connection{
+		Database.InsertRequest(src.Connection{
 			IPAddress:  IPAddress,
 			Port:       PortStr,
 			Path:       Path,

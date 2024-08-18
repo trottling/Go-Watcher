@@ -15,10 +15,6 @@ import (
 
 func OnRequestHandler(r *http.Request) (*http.Request, *http.Response) {
 	IPAddress := r.RemoteAddr
-	PortStr, err := strconv.Atoi(r.URL.Port())
-	if err != nil {
-		PortStr = 0
-	}
 
 	// <-- Request check logic with bool result -->
 
@@ -30,28 +26,9 @@ func OnRequestHandler(r *http.Request) (*http.Request, *http.Response) {
 		// Connection data will be added to database in OnResponseHandler
 		return r, nil
 	} else {
-		// Create connection object
-		connection := Connection{
-			IPAddress:   IPAddress,
-			Type:        r.Method,
-			Port:        PortStr,
-			Path:        r.URL.Path,
-			Location:    r.Host,
-			StatusCode:  http.StatusForbidden,
-			Timestamp:   time.Now().Unix(),
-			ReqHeaders:  GetReqHeaders(r),
-			ReqBody:     GetReqBody(r),
-			RespHeaders: map[string]string{},
-			RespBody:    "",
-			Allowed:     false,
-		}
-
-		// Dump connection
-		connection.DumpPath = DumpConnection(connection)
-
-		// Insert request to database as blocked
-		InsertRequest(connection)
-
+		// Process request in goroutine
+		// TODO Replace raw goroutine with goroutine pool
+		go ProcessNonLegitReq(r)
 		// Return forbidden response
 		return r, goproxy.NewResponse(
 			r,
@@ -59,6 +36,35 @@ func OnRequestHandler(r *http.Request) (*http.Request, *http.Response) {
 			http.StatusForbidden,
 			"Forbidden, bitch")
 	}
+}
+
+func ProcessNonLegitReq(r *http.Request) {
+	PortStr, err := strconv.Atoi(r.URL.Port())
+	if err != nil {
+		PortStr = 0
+	}
+
+	// Create connection object
+	connection := Connection{
+		IPAddress:   r.RemoteAddr,
+		Type:        r.Method,
+		Port:        PortStr,
+		Path:        r.URL.Path,
+		Location:    r.Host,
+		StatusCode:  http.StatusForbidden,
+		Timestamp:   time.Now().Unix(),
+		ReqHeaders:  GetReqHeaders(r),
+		ReqBody:     GetReqBody(r),
+		RespHeaders: map[string]string{},
+		RespBody:    "",
+		Allowed:     false,
+	}
+
+	// Dump connection
+	connection.DumpPath = DumpConnection(connection)
+
+	// Insert request to database as blocked
+	InsertRequest(connection)
 }
 
 func OnResponseHandler(r *http.Response) {

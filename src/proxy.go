@@ -27,7 +27,9 @@ func RunProxyServer() {
 	// Connect response handler
 	ProxyServer.OnResponse().DoFunc(func(r *http.Response, ctx *goproxy.ProxyCtx) *http.Response {
 		// OnResponseHandler will not change response
-		OnResponseHandler(r)
+		// We doesn't need to wait response processing
+		// TODO Replace raw goroutine with goroutine pool
+		go OnResponseHandler(r)
 		return r
 	})
 

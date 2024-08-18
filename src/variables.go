@@ -27,7 +27,8 @@ var (
 	DBConn *sql.DB
 
 	// Proxy server
-	ProxyServer *goproxy.ProxyHttpServer
+	ProxyServer  *goproxy.ProxyHttpServer
+	NetDumpsPath = filepath.FromSlash(RunFolder + "/" + "network_dumps")
 )
 
 // AppConfig App config from config.json

@@ -104,3 +104,27 @@ func GetReqHeaders(r *http.Request) (headersMap map[string]string) {
 	}
 	return headersMap
 }
+
+func GetRespBody(r *http.Response) (respBody string) {
+	if r.Body != nil {
+		// Read body to string
+		bodyBytes, err := io.ReadAll(r.Body)
+		if err != nil {
+			Log.Errorf("Error reading request body: %s", err)
+			respBody = "Error reading request body"
+		} else {
+			respBody = string(bodyBytes)
+		}
+	} else {
+		// Set body to "No request body" if it's empty
+		respBody = "No request body"
+	}
+	return respBody
+}
+
+func GetRespHeaders(r *http.Response) (headersMap map[string]string) {
+	for key, values := range r.Header {
+		headersMap[key] = strings.Join(values, ", ")
+	}
+	return headersMap
+}

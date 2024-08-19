@@ -98,7 +98,71 @@ func OnResponseHandler(r *http.Response) {
 	// Insert request to database as blocked
 	InsertRequest(connection)
 
+	//
 	// Process data
+	// <-- Response check logic -->
+	//
+
+	if !Config.ActivityHandler.BlockIPs {
+		Log.Warn("Block IPs disabled by config rule match")
+		return
+	}
+
+	// Get all connections from last minute
+	connections := GetIPConnections(connection.IPAddress, time.Now().Unix()-60)
+	if connections == nil {
+		Log.Warnf("Cannot get connections from last minute (%s)", connection.IPAddress)
+		return
+	}
+
+	Log.Infof("%s : %d Connections from last minute: ", connection.IPAddress, len(connections))
+
+	// Check for port and pages scanning
+	var LegitPortRpm int    // Page scanning
+	var NonLegitPortRpm int // Port scanning
+	var BrutePathRpm int    // Brute forcing
+
+	for _, conn := range connections {
+		if CheckListContainsInt(Config.ActivityHandler.LegitPorts, conn.Port) {
+			// Process as legit request
+			for _, reg := range LegitPathsIgnoreRegexList {
+				if reg.MatchString(conn.Path) {
+					// Skip connection if it paths like images and styles
+					continue
+				} else {
+					// Process connection
+					LegitPortRpm++
+				}
+			}
+		} else {
+			// Process as non legit request
+			NonLegitPortRpm++
+		}
+
+		// Check for brute forcing
+		for _, reg := range LegitPathsBruteRegexList {
+			if reg.MatchString(conn.Path) {
+				BrutePathRpm++
+			}
+		}
+	}
+
+	if LegitPortRpm > Config.ActivityHandler.LegitPortsRPM {
+		BlockIP(connection.IPAddress, "Page scanning")
+		return
+	}
+
+	if NonLegitPortRpm > Config.ActivityHandler.NonLegitPortsRPM {
+		BlockIP(connection.IPAddress, "Port scanning")
+		return
+	}
+
+	if BrutePathRpm > Config.ActivityHandler.LegitPathsBruteRPM {
+		BlockIP(connection.IPAddress, "Brute force")
+		return
+	}
+
+	Log.Infof("%s : Connection legit", connection.IPAddress)
 }
 
 func DumpConnection(conn Connection) (filePath string) {

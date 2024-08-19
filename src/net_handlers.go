@@ -103,6 +103,8 @@ func OnResponseHandler(r *http.Response) {
 	// <-- Response check logic -->
 	//
 
+	// Process all requests from IP address from last minute
+
 	if !Config.ActivityHandler.BlockIPs {
 		Log.Warn("Block IPs disabled by config rule match")
 		return

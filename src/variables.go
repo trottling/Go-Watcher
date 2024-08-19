@@ -32,9 +32,9 @@ var (
 	NetDumpsPath = GetNetDumpsPath()
 
 	// Activity handler
-	LegitPathsIgnoreRegexList    []*regexp.Regexp
-	RequestsDumpIgnoreRegexList  []*regexp.Regexp
-	LegitPathsBrutePathRegexList []*regexp.Regexp
+	LegitPathsIgnoreRegexList   []*regexp.Regexp
+	RequestsDumpIgnoreRegexList []*regexp.Regexp
+	LegitPathsBruteRegexList    []*regexp.Regexp
 )
 
 // AppConfig App config from config.json

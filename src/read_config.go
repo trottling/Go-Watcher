@@ -36,12 +36,16 @@ func LoadConfig() {
 	// Print the config for debugging
 	jsonConfig, _ := json.MarshalIndent(Config, "", "  ")
 	Log.Info("Config JSON:", "\n", string(jsonConfig))
-	Log.Info("Config loaded successfully")
+
+	Log.Info("Compiling regex...")
 
 	// Compile all regex from config
 	CompileLegitPathsIgnoreRegex()
 	CompileRequestsDumpIgnoreRegex()
 	CompileLegitPathsBruteRegex()
+
+	Log.Info("Config loaded successfully")
+
 }
 
 func CompileLegitPathsIgnoreRegex() (LegitPathsIgnoreRegexList []*regexp.Regexp) {

@@ -41,6 +41,7 @@ func LoadConfig() {
 	// Compile all regex from config
 	CompileLegitPathsIgnoreRegex()
 	CompileRequestsDumpIgnoreRegex()
+	CompileLegitPathsBrutePathRegex()
 }
 
 func CompileLegitPathsIgnoreRegex() (LegitPathsIgnoreRegexList []*regexp.Regexp) {
@@ -61,6 +62,17 @@ func CompileRequestsDumpIgnoreRegex() (RequestsDumpIgnoreRegexList []*regexp.Reg
 			Log.Error("Cannot compile regex: " + err.Error())
 		}
 		RequestsDumpIgnoreRegexList = append(RequestsDumpIgnoreRegexList, reg)
+	}
+	return LegitPathsIgnoreRegexList
+}
+
+func CompileLegitPathsBrutePathRegex() (LegitPathsBrutePathRegexList []*regexp.Regexp) {
+	for _, path := range Config.ActivityHandler.RequestsDumpIgnoreRegex {
+		reg, err := regexp.Compile(path)
+		if err != nil {
+			Log.Error("Cannot compile regex: " + err.Error())
+		}
+		LegitPathsBrutePathRegexList = append(LegitPathsBrutePathRegexList, reg)
 	}
 	return LegitPathsIgnoreRegexList
 }

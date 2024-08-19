@@ -32,8 +32,9 @@ var (
 	NetDumpsPath = GetNetDumpsPath()
 
 	// Activity handler
-	LegitPathsIgnoreRegexList   []*regexp.Regexp
-	RequestsDumpIgnoreRegexList []*regexp.Regexp
+	LegitPathsIgnoreRegexList    []*regexp.Regexp
+	RequestsDumpIgnoreRegexList  []*regexp.Regexp
+	LegitPathsBrutePathRegexList []*regexp.Regexp
 )
 
 // AppConfig App config from config.json
@@ -43,14 +44,15 @@ type AppConfig struct {
 		ShowConnectionsSTDOUT bool `json:"Show_Connections_STDOUT"`
 	} `json:"Proxy_Server"`
 	ActivityHandler struct {
-		NonLegitPortsRPM        int      `json:"Non_legit_Ports_RPM"`
-		LegitPortsRPM           int      `json:"Legit_Ports_RPM"`
-		LegitPathsIgnoreRegex   []string `json:"Legit_Paths_Ignore_Regex"`
-		LegitPorts              []int    `json:"Legit_Ports"`
-		BlockIPs                bool     `json:"Block_IPs"`
-		BlockIPsTime            int      `json:"Block_IPs_time"`
-		DumpRequests            bool     `json:"Dump_Requests"`
-		RequestsDumpIgnoreRegex []string `json:"Requests_Dump_Ignore_Regex"`
+		NonLegitPortsRPM         int      `json:"Non_legit_Ports_RPM"`
+		LegitPortsRPM            int      `json:"Legit_Ports_RPM"`
+		LegitPathsIgnoreRegex    []string `json:"Legit_Paths_Ignore_Regex"`
+		LegitPathsBrutePathRegex []string `json:"Legit_Paths_Brute_Path_Regex"`
+		LegitPorts               []int    `json:"Legit_Ports"`
+		BlockIPs                 bool     `json:"Block_IPs"`
+		BlockIPsTime             int      `json:"Block_IPs_time"`
+		DumpRequests             bool     `json:"Dump_Requests"`
+		RequestsDumpIgnoreRegex  []string `json:"Requests_Dump_Ignore_Regex"`
 	} `json:"Activity_Handler"`
 }
 

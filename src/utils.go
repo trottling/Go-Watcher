@@ -156,3 +156,12 @@ func GetRespHeaders(r *http.Response) map[string]string {
 	}
 	return headersMap
 }
+
+func CheckListContainsInt(l []int, r int) bool {
+	for _, i := range l {
+		if i == r {
+			return true
+		}
+	}
+	return false
+}

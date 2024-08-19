@@ -60,7 +60,11 @@ func CheckIpBlock(ip string) bool {
 
 func InsertRequest(request Connection) {
 	// Insert the request data into the 'requests' table
-	Log.Infof("Inserting request: %+v", request)
+
+	if Config.ProxyServer.ShowConnectionsSTDOUT {
+		Log.Infof("Inserting request: %+v", request)
+	}
+
 	_, err := DBConn.Exec(`
 		INSERT INTO connections (ip_address, port, path, location, status_code, timestamp, allowed, type, dump_path)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -68,4 +72,39 @@ func InsertRequest(request Connection) {
 	if err != nil {
 		Log.Error("Error inserting request: ", err)
 	}
+}
+
+func GetIPConnections(ip string, timestamp int64) []Connection {
+	// Get all connections from IP
+	rows, err := DBConn.Query("SELECT * FROM connections WHERE ip_address = ? AND timestamp > ?", ip, timestamp)
+	if err != nil {
+		Log.Errorf("Error getting IP connections count (%s): %s", ip, err)
+		return nil
+	}
+
+	var connections []Connection
+
+	for rows.Next() {
+		var connection Connection
+		err := rows.Scan(&connection.IPAddress, &connection.Port, &connection.Path, &connection.Location, &connection.StatusCode, &connection.Timestamp, &connection.Allowed, &connection.Type, &connection.DumpPath)
+		if err != nil {
+			Log.Error("Error getting IP connections count: ", err)
+			continue
+		}
+		connections = append(connections, connection)
+	}
+
+	return connections
+}
+
+func BlockIP(ip string, reason string) {
+	// Block IP
+	_, err := DBConn.Exec(`
+		INSERT INTO blocked_ips (ip_address, timestamp_from, timestamp_to, reason)
+		VALUES (?, ?, ?, ?)
+	`, ip, time.Now().Unix(), time.Now().Unix()+int64(Config.ActivityHandler.BlockIPsTime), reason)
+	if err != nil {
+		Log.Error("Error inserting request: ", err)
+	}
+	Log.Infof("IP %s blocked for %d seconds, reason: %s", ip, Config.ActivityHandler.BlockIPsTime, reason)
 }
